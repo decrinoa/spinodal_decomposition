@@ -77,4 +77,16 @@ for istep in range(1, nstep + 1):
         plt.tight_layout()
         plt.pause(0.1)
         
-plt.show()            
+plt.show()    
+
+#test that all the values of c are between the low and up bounds 
+#note, if you change the 0.5 value in add_fluctuations, it must change here too
+def test_add_fluctuation():
+    c = add_fluctuation(Nx, Ny, c0, dc)
+    lower_bound = c0 - dc*(0.5)
+    upper_bound = c0 + dc*(0.5)
+    
+    assert np.all(c >= lower_bound)
+    assert np.all(c <= upper_bound)
+
+            
