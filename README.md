@@ -3,9 +3,9 @@
 The spinodal decomposition is a type of second order phase transformation where the order parameter is consituted by the concentration of a certain atomic species.
 The equation that describes the kinetics of the order parameter is the Cahn-Hilliard equation. 
 
-$$ \frac{\partial c}{\partial t} = \nabla \cdot \biggl\{ M \nabla \left[ \frac{\partial f^{hom}}{\partial c} - 2 K_c \nabla^2c \right] \biggr\} $$
+$$ \frac{\partial c}{\partial t} = \nabla \cdot \left[ M \nabla \left[ \frac{\partial f^{hom}}{\partial c} - 2 K_c \nabla^2c \right] \right] $$
 
-where $M$ is the mobility, $\frac{\partial f^{hom}}{\partial c$ is the chemical potential for diffusion, $K_c$ is the interface curvature. 
+where $M$ is the mobility, $\frac{\partial f^{hom}}{\partial c}$ is the chemical potential for diffusion, $K_c$ is the interface curvature. 
 The equation can be simplified by replacing $M$ with ist average value $M_0$, leading to:
 
 $$ \frac{\partial c}{\partial t} = M_0 \nabla^2 \left[ \frac{\partial f^{hom}}{\partial c} - 2 K_c \nabla^2c \right] $$.
