@@ -1,4 +1,8 @@
+# -*- coding: utf-8 -*-
 """
+
+Created on Thu Oct  10 13:08:11 2024
+
 @author: decrinoa
 
 purpose of the program: to simulate a spinodal decomposition
