@@ -11,25 +11,25 @@ import numpy as np
 
 def add_fluctuation(Nx, Ny, c0, noise):
     """
-   This function generates a 2D matrix of size (Nx, Ny) representing concentration values.
-   Each value is perturbed by a random noise term, which is uniformly distributed around the base concentration 'c0',
-   between -noise*0.5 and +noise*0.5.
+    This function generates a 2D matrix of size (Nx, Ny) representing concentration values.
+    Each value is perturbed by a random noise term, which is uniformly distributed around the base concentration 'c0',
+    between -noise*0.5 and +noise*0.5.
 
-   Parameters:
-   ----------
-   Nx : The number of columns in the concentration matrix.
+    Parameters:
+    ----------
+    Nx : The number of columns in the concentration matrix.
        
-   Ny : The number of rows in the concentration matrix.
+    Ny : The number of rows in the concentration matrix.
        
-   c0 : The base concentration value around which fluctuations will occur.
+    c0 : The base concentration value around which fluctuations will occur.
        
-   noise : The amplitude of the random fluctuations added to the base concentration.
+    noise : The amplitude of the random fluctuations added to the base concentration.
 
-   Returns:
-   -------
-   np.ndarray
-       A 2D numpy array of shape (Ny, Nx) containing the concentration values with fluctuations.
-   """
+    Returns:
+    -------
+    np.ndarray
+        A 2D numpy array of shape (Ny, Nx) containing the concentration values with fluctuations.
+    """
     np.random.seed(24)
     return c0 + noise * (0.5 - np.random.rand(Nx,Ny))
 

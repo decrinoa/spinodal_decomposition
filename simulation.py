@@ -29,11 +29,11 @@ def run_simulation():
     dtime = config['settings']['dtime']
 
     # Material specific parameters
-    c0 = config['settings']['c0']
-    dc = config['settings']['dc']
-    mobility = config['settings']['mobility']
-    grad_coef = config['settings']['grad_coef']
-    A = config['settings']['A'] 
+    c0 = config['material']['c0']
+    dc = config['material']['dc']
+    mobility = config['material']['mobility']
+    grad_coef = config['material']['grad_coef']
+    A = config['material']['A'] 
 
     Nx = int(Nx)
     Ny = int(Ny)

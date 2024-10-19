@@ -22,8 +22,8 @@ Ny = config['settings']['Ny']
 dx = config['settings']['dx']
 dy = config['settings']['dy']
 
-c0 = config['settings']['c0']
-dc = config['settings']['dc']
+c0 = config['material']['c0']
+dc = config['material']['dc']
 
 Nx = int(Nx)
 Ny = int(Ny)
@@ -63,7 +63,6 @@ def test_add_fluctuation_boundaries(Nx,Ny,c0,dc):
     assert np.all(c >= lower_bound)
     assert np.all(c <= upper_bound)
 
-
 @given(Nx = st.integers(1,Nx), Ny = st.integers(1,Ny))
 def test_chemical_potential_shape(Nx, Ny):
     """
@@ -80,9 +79,11 @@ def test_chemical_potential_shape(Nx, Ny):
     -----------
     - Asserts that the shape of the output from 'chemical_potential' matches the shape of the input concentration matrix 'c'.
     """
+    np.random.seed(24)
     c = np.random.rand(Nx, Ny)
     A = 1
     result = Cahn_Hilliard.chemical_potential(c, A)
+    
     assert result.shape == c.shape
 
 @given(Nx = st.integers(1,Nx), Ny = st.integers(1,Ny), dx = st.floats(0.1,dx), dy = st.floats(0.1,dy))
@@ -105,6 +106,37 @@ def test_my_laplacian_shape(Nx, Ny, dx, dy):
     -----------
     - Asserts that the shape of the output from 'my_laplacian' matches the shape of the input concentration matrix 'c'.
     """
+    np.random.seed(24)
     c = np.random.rand(Nx, Ny)
     result = Cahn_Hilliard.my_laplacian(c, dx, dy)
+    
     assert result.shape == c.shape
+    
+@given(Nx = st.integers(1,Nx), Ny = st.integers(1,Ny), dx = st.floats(0.1,dx), dy = st.floats(0.1,dy))
+def test_my_laplacian_boundaries(Nx, Ny, dx, dy):
+    """
+    This test verifies that the output of the 'my_laplacian' function 
+    has the same shape as the input concentration matrix 'c'.
+
+    Parameters:
+    ----------
+    Nx : The number of columns in the concentration matrix. Must be greater or equal than 1 and lower or euqual than Nx in configuration file.
+       
+    Ny : The number of rows in the concentration matrix. Must be greater or equal than 1 and lower or euqual than Ny in configuration file.
+
+    dx : The spacing between points in the x-direction. Must be greater or equal than 0.1 and lower or equal than dx in configuration file.
+    
+    dy : The spacing between points in the y-direction. Must be greater or equal than 0.1 and lower or equal than dy in configuration file.
+    
+    Assertions:
+    -----------
+    - Asserts that the first row of the output from 'my_laplacian' matches the last row.
+    
+    - Asserts that the first column of the output from 'my_laplacian' matches the last column.
+    """
+    np.random.seed(24)
+    c = np.random.rand(Nx, Ny)
+    result = Cahn_Hilliard.my_laplacian(c, dx, dy)
+    
+    assert np.allclose(result[0, :], result[-1, :])
+    assert np.allclose(result[:, 0], result[:, -1]) 
