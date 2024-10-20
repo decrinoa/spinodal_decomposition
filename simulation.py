@@ -60,7 +60,7 @@ def run_simulation():
         # Laplacian of concentration
         mu_c = Cahn_Hilliard.chemical_potential(c, A)  
         # Chemical potential
-        dF_dc = mu_c - 2 * grad_coef * lap_c  
+        dF_dc = mu_c - 2*grad_coef*lap_c  
         #generalized diffusion potential
         lap_dF_dc = Cahn_Hilliard.my_laplacian(dF_dc, dx, dy)  
         # Laplacian of dF/dc, that actually appears in 

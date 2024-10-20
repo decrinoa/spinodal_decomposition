@@ -34,7 +34,7 @@ def add_fluctuation(Nx, Ny, c0, dc):
         the concentration values with fluctuations.
     """
     np.random.seed(24)
-    return c0 + dc * (0.5 - np.random.rand(Nx,Ny))
+    return c0 + dc*(0.5-np.random.rand(Nx,Ny))
 
 def chemical_potential(c, A):
     """
@@ -55,7 +55,7 @@ def chemical_potential(c, A):
         A 2D numpy array of the same shape as 'c', 
         containing the computed chemical potential values.
     """
-    return 2 * A * (c * ((1 - c) ** 2) - (c ** 2) * (1 -c))
+    return 2*A*(c*((1-c)**2) - (c**2)*(1-c))
 
 def my_laplacian(c, dx, dy):
     """
@@ -88,4 +88,4 @@ def my_laplacian(c, dx, dy):
     c_rig = np.hstack((c[:, 1:], c[:, 0][:, np.newaxis]))   
     #in the position ij now there's i(j-1)
     #np.newaxis assures that c_lef and c_right are 2D arrays
-    return (c_top + c_bot + c_rig + c_lef - 4 * c) / (dx * dy)
+    return (c_top+c_bot+c_rig+c_lef-4*c) / (dx*dy)
