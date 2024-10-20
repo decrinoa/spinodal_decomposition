@@ -32,7 +32,13 @@ def add_fluctuation(Nx, Ny, c0, dc):
     np.ndarray
         A 2D numpy array of shape (Ny, Nx) containing 
         the concentration values with fluctuations.
+    
+    Raise:
+    -----
+    ValueError if one dimension of the matrix is less than 1. 
     """
+    if Nx < 1 or Ny < 1:
+        raise ValueError('Both dimensions of the matrix must be > 1, but are {} and {}'.format(Nx,Ny))
     np.random.seed(24)
     return c0 + dc*(0.5-np.random.rand(Nx,Ny))
 
@@ -77,7 +83,12 @@ def my_laplacian(c, dx, dy):
     np.ndarray
         A 2D numpy array of the same shape as `c`, 
         containing the computed Laplacian values.
+    Raise:
+    -----
+    ValueError if one spacing is less than or equal to 0.
     """
+    if dx <= 0 or dy <= 0:
+        raise ValueError('Both spacing must be greater than 0.')
     Ny, Nx = c.shape
     c_top = np.vstack((c[-1, :], c[:-1, :]))                
     #in the position ij now there's (i-1)j
