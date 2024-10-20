@@ -28,8 +28,10 @@ def load_results_from_csv(filename='simulation_results.csv'):
     results = []
     for index, row in df.iterrows():
         time = row['Time']
-        c = np.fromstring(row['Concentration'].strip('[]'), sep=',', dtype=float).reshape((Ny, Nx))
-        mu_c = np.fromstring(row['Chemical Potential'].strip('[]'), sep=',', dtype=float).reshape((Ny, Nx))
+        c = np.fromstring(row['Concentration'].strip('[]'),
+                          sep=',', dtype=float).reshape((Ny, Nx))
+        mu_c = np.fromstring(row['Chemical Potential'].strip('[]'),
+                             sep=',', dtype=float).reshape((Ny, Nx))
         
         results.append((time, c, mu_c))
     
