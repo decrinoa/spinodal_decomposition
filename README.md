@@ -72,8 +72,28 @@ python3 plotting.py
 
 # Structure of the project
 
+This project is divided into five blocks:
+
+In the file Cahn_Hilliard there are stored the main function to run the simulation.
+The scope of these functions is to generate a perturbation for the initial concentration matrix and to compute the related important quantities for the simulation (chemical_potentail and laplacian).
+
+In the file testing there are the tests related to the Cahn_Hilliard file, the test are performed using hypothesis library.
+
+In the file configuration there are all the definitions of the parameters used in the simulation file. 
+These parameters are divided in two section: the 'settings' section is related to the parameters of the simulation, 
+i.e. the dimension of the matrix, the discrete spacing used in the laplacian calculation, the parameters linked to the simulation steps and to its printing;
+the material section contains the parameters typical of the system simulated, 
+i.e the initial concentration, the fluctuations of the concentration, the mobility and the constants of the various equations. 
+
+In the file simulation there is the main part of the code. The simulations is first executed by calling the functions present in Cahn_Hilliard. 
+The results of the simulation are then stored in the 'results' variable that is then saved to a csv file by using pandas library.
+The scope of the simulation is to show the evolution of the concentrations and the chemical potential values in the mesh grid that consistutes the system.  
+
+In the file plotting there is the function that plots the evolution of the concentration and chemical potentail values by means of two color maps. 
+The data for the plotting are uploaded from the csv file and 10 significative frame of the simulation are saved in the newly created images folder.
 
 # References
 
 [1] Robert W. Balluffi, Samuel M. Allen, W. Craig Carter - Kinetics of Materials (2005, Wiley-Interscience)
+
 [2] https://github.com/john-s-butler-dit/Numerical-Analysis-Python.git
