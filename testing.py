@@ -22,8 +22,8 @@ Ny = config['settings']['Ny']
 dx = config['settings']['dx']
 dy = config['settings']['dy']
 
-c0 = config['material']['c0']
-dc = config['material']['dc']
+c0 = config['material1']['c0']
+dc = config['material1']['dc']
 
 Nx = int(Nx)
 Ny = int(Ny)
