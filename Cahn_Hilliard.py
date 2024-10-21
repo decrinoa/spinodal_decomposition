@@ -90,13 +90,17 @@ def my_laplacian(c, dx, dy):
     if dx <= 0 or dy <= 0:
         raise ValueError('Both spacing must be greater than 0.')
     Ny, Nx = c.shape
-    c_top = np.vstack((c[-1, :], c[:-1, :]))                
-    #in the position ij now there's (i-1)j
-    c_bot = np.vstack((c[1:, :], c[0, :]))                  
-    #in the position ij now there's (i+1)j
+    # In the position ij now there's (i-1)j
+    c_top = np.vstack((c[-1, :], c[:-1, :]))
+    # In the position ij now there's (i+1)j                
+    c_bot = np.vstack((c[1:, :], c[0, :]))
+    # In the position ij now there's i(j-1)                  
     c_lef = np.hstack((c[:, -1][:, np.newaxis], c[:, :-1])) 
-    #in the position ij now there's i(j-1)
+    # In the position ij now there's i(j-1)
     c_rig = np.hstack((c[:, 1:], c[:, 0][:, np.newaxis]))   
-    #in the position ij now there's i(j-1)
-    #np.newaxis assures that c_lef and c_right are 2D arrays
-    return (c_top+c_bot+c_rig+c_lef-4*c) / (dx*dy)
+    # np.newaxis assures that c_lef and c_right are 2D arrays
+    # Finite second derivative for the x direction
+    d2c_dx2 = (c_top+c_bot-2*c) / (dx*dx)
+    # Finite second derivative for the y direction
+    d2c_dy2 = (c_lef+c_rig-2*c) / (dy*dy)
+    return d2c_dx2 + d2c_dy2
