@@ -43,12 +43,12 @@ def plot_results(results):
     for time, c, mu_c in results:
         plt.subplot(1, 2, 1)
         plt.imshow(c, cmap='gray', vmin=0, vmax=1)
-        plt.colorbar()
-        plt.title(f'Concentration at time {time:.2f}')
+        plt.colorbar(label='c (a.u.)')
+        plt.title(f'Concentration at time {time:.2f} s')
 
         plt.subplot(1, 2, 2)
-        plt.imshow(mu_c, cmap='jet')
-        plt.title(f'Chemical potential at time {time:.2f}')
+        plt.imshow(mu_c, cmap='plasma')
+        plt.title(f'Chemical potential at time {time:.2f} s')
         plt.colorbar(label='μ (x,y)')
 
         plt.tight_layout()
