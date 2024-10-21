@@ -1,7 +1,7 @@
 # Spinodal Decomposition
 
 The spinodal decomposition is a type of second order phase transformation where the order parameter is consituted by the concentration of a certain atomic species.
-The equation that describes the kinetics of the order parameter is the Cahn-Hilliard equation. 
+The equation that describes the kinetics of the order parameter is the Cahn-Hilliard equation[1]. 
 
 $$ \frac{\partial c}{\partial t} = \nabla \cdot \left[ M \nabla \left[ \frac{\partial f^{hom}}{\partial c} - 2 K_c \nabla^2c \right] \right] $$
 
@@ -20,7 +20,7 @@ In this project we will simulate the spinodal decomposition of different systems
 
 # Remarks on the method used for the Laplacian calculation
 
-The second-order derivatives can be easily handled by replacing them with central differences. 
+The second-order derivatives can be easily handled by replacing them with central differences[2]. 
 The most widely used difference approximation of the second-order derivative is: 
 
 $$ \frac{\partial^2 f(x_i,y_j)}{\partial x^2} \approx \frac{f_{i+1}^{j} - 2 f_{i}^{j} + f_{i-1}^{j}}{{\Delta x}^2}. $$
@@ -38,3 +38,9 @@ In this code the calculation of the displaced terms is obtained by creating 4 ne
 
 # Structure of the project
 
+
+
+# References
+
+[1] Robert W. Balluffi, Samuel M. Allen, W. Craig Carter - Kinetics of Materials (2005, Wiley-Interscience)
+[2] https://github.com/john-s-butler-dit/Numerical-Analysis-Python.git
