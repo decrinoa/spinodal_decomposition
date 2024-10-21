@@ -12,7 +12,7 @@ import pandas as pd
 import numpy as np
 
 def run_simulation():
-    #load data from configuration file
+    # Load data from configuration file
     config = configparser.ConfigParser()
     config.read('configuration.ini')
 
@@ -49,8 +49,13 @@ def run_simulation():
     mobility = float(mobility)
     grad_coef = float(grad_coef)
     A = float(A)
+    
+    # Creation of the empty 2Darrays
+    c = np.zeros((Ny, Nx))
+    mu_c = np.zeros((Ny, Nx))
+    lap_c = np.zeros((Ny, Nx))
 
-
+    # Initial configuration with fluctuation
     c = Cahn_Hilliard.add_fluctuation(Nx, Ny, c0, dc)
 
     #evolve
