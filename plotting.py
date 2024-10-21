@@ -38,18 +38,19 @@ def load_results_from_csv(filename='simulation_results.csv'):
     return results
 
 def plot_results(results):
-    plt.figure(figsize=(12, 10))
+    plt.figure(figsize=(12, 6))
 
     for time, c, mu_c in results:
         plt.subplot(1, 2, 1)
-        plt.imshow(c, cmap='gray', vmin=0, vmax=1)
-        plt.colorbar(label='c (a.u.)')
+        im_c = plt.imshow(c, cmap='gray', vmin=0, vmax=1)
+        plt.colorbar(im_c, label='c (a.u.)', aspect=40)
         plt.title(f'Concentration at time {time:.2f} s')
 
         plt.subplot(1, 2, 2)
-        plt.imshow(mu_c, cmap='plasma')
+        im_m = plt.imshow(mu_c, cmap='plasma')
+        plt.colorbar(im_m, label='μ (x,y)', aspect=40)
         plt.title(f'Chemical potential at time {time:.2f} s')
-        plt.colorbar(label='μ (x,y)')
+    
 
         plt.tight_layout()
         plt.pause(0.1)
