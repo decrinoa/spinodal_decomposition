@@ -36,8 +36,41 @@ In this code the calculation of the displaced terms is obtained by creating 4 ne
 - (i-1)j item is obtained by stacking orizontally the last column of the original matrix on the left of the original matrix deprived of the last column; 
 - (i+1)j item is obtained by stacking orizontally all the column of the original matrix starting from the second one on the left of the original matrix deprived of the first column.
 
-# Structure of the project
+# How to download and start the projet
 
+The project has been developed on the Windows Subsystem for Linux, 
+these steps are referred to linux or WSL users. 
+
+1- In the terminal or command prompt clone the repository
+```
+git clone https://github.com/decrinoa/spinodal_decomposition.git
+```
+2- Make sure that you have all the needed packages in python3: 
+```
+pip install numpy 
+pip install matplotlib
+pip install pandas
+pip install configparser
+pip install os
+pip install hypothesis
+```
+The version of numpy must be lower than 2.x.x because it is incompatible with the used matplotlib methods. 
+The version raccomended is numpy 1.26.4.
+
+3- Navigate into the project directory
+```
+cd spinodal_decomposition 
+```
+4- Start the simulation
+```
+python3 simulation.py
+```
+5- Plot the results
+```
+python3 plotting.py
+```
+
+# Structure of the project
 
 
 # References
