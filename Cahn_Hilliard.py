@@ -90,13 +90,13 @@ def my_laplacian(c, dx, dy):
     if dx <= 0 or dy <= 0:
         raise ValueError('Both spacing must be greater than 0.')
     Ny, Nx = c.shape
-    # In the position ij now there's (i-1)j
-    c_top = np.vstack((c[-1, :], c[:-1, :]))
-    # In the position ij now there's (i+1)j                
-    c_bot = np.vstack((c[1:, :], c[0, :]))
-    # In the position ij now there's i(j-1)                  
-    c_lef = np.hstack((c[:, -1][:, np.newaxis], c[:, :-1])) 
     # In the position ij now there's i(j-1)
+    c_top = np.vstack((c[-1, :], c[:-1, :]))
+    # In the position ij now there's i(j-1)                
+    c_bot = np.vstack((c[1:, :], c[0, :]))
+    # In the position ij now there's (i-1)j                  
+    c_lef = np.hstack((c[:, -1][:, np.newaxis], c[:, :-1])) 
+    # In the position ij now there's (i+1)j
     c_rig = np.hstack((c[:, 1:], c[:, 0][:, np.newaxis]))   
     # np.newaxis assures that c_lef and c_right are 2D arrays
     # Finite second derivative for the x direction
