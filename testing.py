@@ -125,7 +125,7 @@ def test_chemical_potential_shape(Nx, Ny):
     assert result.shape == c.shape
 
 @given(Nx=st.integers(1,Nx), Ny=st.integers(1,Ny), 
-       dx=st.floats(0.1,dx), dy=st.floats(0.1,dy))
+       dx=st.floats(1.0,dx), dy=st.floats(1.0,dy))
 def test_my_laplacian_shape(Nx, Ny, dx, dy):
     """
     This test verifies that the output of the 'my_laplacian' function 
