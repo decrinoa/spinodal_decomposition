@@ -18,10 +18,13 @@ config.read('configuration.ini')
 Nx = config['settings']['Nx']
 Ny = config['settings']['Ny']
 
-
+nsave = config['settings']['nsave']
 
 Nx = int(Nx)
 Ny = int(Ny)
+
+nsave = int(nsave)
+
 
 def load_results_from_csv(filename='simulation_results.csv'):
     # Load data from CSV file
@@ -40,7 +43,7 @@ def load_results_from_csv(filename='simulation_results.csv'):
     
     return results
 
-def plot_results(results, folder='images'):
+def plot_results(results, nsave, folder='images'):
     
     os.makedirs(folder, exist_ok=True)
     
@@ -59,7 +62,7 @@ def plot_results(results, folder='images'):
     
         plt.tight_layout()
         
-        if time % 50 == 0:
+        if time % nsave == 0:
             plt.savefig(os.path.join(folder, f'plot_at_time_{time:.2f}.png'))
             print(f'Saved plot for time {time:.2f} s')
             
@@ -68,4 +71,4 @@ def plot_results(results, folder='images'):
     plt.show()
     
 
-plot_results(load_results_from_csv(filename='simulation_results.csv'))
+plot_results(load_results_from_csv(filename='simulation_results.csv'), nsave)
