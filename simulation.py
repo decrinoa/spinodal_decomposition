@@ -56,14 +56,14 @@ def run_simulation():
     #evolve
     results = []
     for istep in range(1, nstep + 1):
-        lap_c = Cahn_Hilliard.my_laplacian(c, dx, dy)  
         # Laplacian of concentration
-        mu_c = Cahn_Hilliard.chemical_potential(c, A)  
+        lap_c = Cahn_Hilliard.my_laplacian(c, dx, dy)  
         # Chemical potential
+        mu_c = Cahn_Hilliard.chemical_potential(c, A)
+        # Generalized diffusion potential
         dF_dc = mu_c - 2*grad_coef*lap_c  
-        #generalized diffusion potential
+        # Laplacian of dF/dc, main term of the Cahn Hilliard equation
         lap_dF_dc = Cahn_Hilliard.my_laplacian(dF_dc, dx, dy)  
-        # Laplacian of dF/dc, that actually appears in 
 
         # Time evolution
         c += dtime * mobility * lap_dF_dc
