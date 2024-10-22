@@ -33,6 +33,38 @@ dy = float(dy)
 c0 = float(c0)
 dc = float(dc)
 
+
+@given(Nx=st.integers(1,Nx), Ny=st.integers(1,Ny), 
+       c0=st.floats(0, c0), dc=st.floats(0, dc))
+def test_add_fluctuation_reproducibility(Nx, Ny, c0, dc):
+    """
+    This test ensure that the function 'add_fluctuation' produces a 
+    consistent output for given input parameters when a fixed random seed is used. 
+    
+    Parameters:
+    ----------
+    Nx : The number of columns in the concentration matrix. 
+         Must be >= 1 than and <= than Nx in configuration file.
+       
+    Ny : The number of rows in the concentration matrix. 
+         Must be >= than 1 and <= than Ny in configuration file.
+
+    c0 : The base concentration value around which fluctuations will occur. 
+         Must >= than 0 and <= than c0 in configuration file.
+       
+    dc : The amplitude of the fluctuations added to the base concentration. 
+         Must >= than 0 and <= than dc in configuration file.
+         
+    Assertions:
+    -----------
+    - Asserts that the output from the `add_fluctuation` function matches 
+    the expected result calculated using the same formula with the same seed. 
+    """
+    result = Cahn_Hilliard.add_fluctuation(Nx, Ny, c0, dc)
+    np.random.seed(24)
+    expected = c0 + dc*(0.5-np.random.rand(Ny,Nx))
+    assert np.array_equal(result, expected)
+    
 @given(Nx=st.integers(1,Nx), Ny=st.integers(1,Ny), 
        c0=st.floats(0, c0), dc=st.floats(0, dc))
 def test_add_fluctuation_shape(Nx, Ny, c0, dc):
