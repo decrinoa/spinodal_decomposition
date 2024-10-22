@@ -148,11 +148,37 @@ def test_chemical_potential_shape(Nx, Ny):
     """
     np.random.seed(24)
     c = np.random.rand(Ny, Nx)
-    A = 1
+    A = 1.0
     result = Cahn_Hilliard.chemical_potential(c, A)
     
     assert result.shape == c.shape
 
+@given(Nx=st.integers(1,Nx), Ny=st.integers(1,Ny))
+def test_chemical_potential_values(Nx, Ny):
+    """
+    This test verifies that the output of the function 'chemical_potential'
+    matches the expected chemical potential values calculated using the known formula.
+
+    Parameters:
+    ----------
+    Nx : The number of columns in the concentration matrix. 
+         Must be >= 1 than and <= than Nx in configuration file.
+       
+    Ny : The number of rows in the concentration matrix. 
+         Must be >= than 1 and <= than Ny in configuration file.
+
+    Assertions:
+    -----------
+    - Asserts that the actual output from the `chemical_potential` 
+    function is nearly equal to the expected output.
+    """
+    np.random.seed(24)
+    c = np.random.rand(Ny, Nx)
+    A = 1.0
+    result = Cahn_Hilliard.chemical_potential(c, A)
+    expected = 2 * A * (c * (1 - c)**2 - c**2 * (1 - c))
+    np.testing.assert_almost_equal(result, expected)
+    
 @given(Nx=st.integers(1,Nx), Ny=st.integers(1,Ny), 
        dx=st.floats(1.0,dx), dy=st.floats(1.0,dy))
 def test_my_laplacian_shape(Nx, Ny, dx, dy):
