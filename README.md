@@ -63,6 +63,22 @@ The scope of the simulation is to show the evolution of the concentrations and t
 In the file plotting there is the function that plots the evolution of the concentration and chemical potential values by means of two color maps. 
 The data for the plotting are uploaded from the csv file and 10 significant frame of the simulation are saved in the newly created images folder.
 
+## Guide on the configuration modification
+
+The user can decide which of the two configuration to use.
+ 
+In order to switch from one to the other, is necessary to open and modify the simulation.py file.
+
+At line 31 there is the section regarding the material's parameter, in the base version the material chosen is 'material1',
+in order to switch to 'material2' is necessary to substitute the keyword 'material1' with 'material2'. 
+
+If the user wants to add a new configuration, a new section in the configuration.ini file can be added.
+This new configuration must be preceded by the keyword [material3]. 
+
+It is suggested to leave the value of the initial concentration to 0.5, since in this way the starting point is and heterogeneous system. 
+The value of the amplitude of the fluctuations should not be too big since it is a fluctuation. 
+A recommended maximum value is 0.1.  
+
 # Theory of Spinodal Decomposition
 
 The spinodal decomposition is a type of second order phase transformation where the order parameter is constituted by the concentration of a certain atomic species.
