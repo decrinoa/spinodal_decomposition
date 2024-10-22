@@ -79,6 +79,10 @@ It is suggested to leave the value of the initial concentration to 0.5, since in
 The value of the amplitude of the fluctuations should not be too big since it is a fluctuation. 
 A recommended maximum value is 0.1.  
 
+If the user wants a system that evolves more rapidly it is suggested to enhance the 'mobility' value. 
+Also the user can decide to amplify the evolution of the concentration's fluctuation by enhancing the constant of the chemical potential 'A'.
+Finally, if the user wants to dump the concentration's fluctuation is can do so by enhancing the 'grad_coef' value.
+
 # Theory of Spinodal Decomposition
 
 The spinodal decomposition is a type of second order phase transformation where the order parameter is constituted by the concentration of a certain atomic species.
@@ -118,6 +122,19 @@ In this code the calculation of the displaced terms is obtained by creating 4 ne
 - (i+1)j item is obtained by stacking horizontally all the column of the original matrix starting from the second one on the left of the original matrix deprived of the first column.
 
 In this way also the element at the border of the matrix are properly handled. 
+
+
+# Remarks on the configurations used and their main outcomes
+ 
+In the file configuration.ini two examples are reported: 
+- the 'material1' parameters corresponds to a system where the predominant term is the diffusive term, 
+therefore the fluctuations of the concentration will be amplified and the system will evolve faster in the two phase configuration;
+- the 'material2' parameters corresponds to a system where the predominant term is the gradient term, the fluctuations are therefore dumped and the system will evolve slowly. 
+
+An illustration of the difference between the two materials can be seen in the following image. 
+The outcomes of the simulation at time 50s, 250s and 500s are presented for both the configuration given. 
+
+![alt text](https://github.com/decrinoa/spinodal_decomposition/blob/main/images/comparison.png) 
 
 # References
 
