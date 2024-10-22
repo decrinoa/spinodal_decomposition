@@ -103,7 +103,18 @@ On the other hand, the gradient term tends to dampen these fluctuations.
 The study of spinodal decomposition is fundamental in the framework of phase-field modelling for microstructure and their stability.
 In this project we will simulate the spinodal decomposition of different systems. 
 
-# Remarks on the method used for the Laplacian calculation
+## Remarks on the chemical potential 
+
+The chemical potential is defined as the derivative of homogeneous free energy in terms of the concentration.
+In this code the homogeneous free energy is chosen to be:
+
+$$ f^{hom} = Ac^2(1-c)^2.$$
+
+Therefore the derivative in terms of the concetration will be:
+
+$$ \mu = \frac{\partial f^{hom}}{\partial c} = 2A[c(1-c)^2-c^2(1-c)]. $$
+
+## Remarks on the method used for the Laplacian calculation
 
 The second-order derivatives can be easily handled by replacing them with central differences[2]. 
 The most widely used difference approximation of the second-order derivative is: 
@@ -124,7 +135,7 @@ In this code the calculation of the displaced terms is obtained by creating 4 ne
 In this way also the element at the border of the matrix are properly handled. 
 
 
-# Remarks on the configurations used and their main outcomes
+## Remarks on the configurations used and their main outcomes
  
 In the file configuration.ini two examples are reported: 
 - the 'material1' parameters corresponds to a system where the predominant term is the diffusive term, 
