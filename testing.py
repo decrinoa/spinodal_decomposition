@@ -32,6 +32,35 @@ dy = float(dy)
 
 c0 = float(c0)
 dc = float(dc)
+
+@given(Nx=st.integers(1,Nx), Ny=st.integers(1,Ny), 
+       c0=st.floats(0, c0), dc=st.floats(0, dc))
+def test_add_fluctuation_shape(Nx, Ny, c0, dc):
+    """
+    This test verifies that the output of the 'add_fluctuation' function 
+    has the same shape as the input column and row 'Nx', 'Ny'.
+
+    Parameters:
+    ----------
+    Nx : The number of columns in the concentration matrix. 
+         Must be >= 1 than and <= than Nx in configuration file.
+       
+    Ny : The number of rows in the concentration matrix. 
+         Must be >= than 1 and <= than Ny in configuration file.
+
+    c0 : The base concentration value around which fluctuations will occur. 
+         Must >= than 0 and <= than c0 in configuration file.
+       
+    dc : The amplitude of the fluctuations added to the base concentration. 
+         Must >= than 0 and <= than dc in configuration file.
+         
+    Assertions:
+    -----------
+    - Asserts that the shape of the output from 'add_fluctuation' 
+      matches the shape of the input values for column and row 'Nx', 'Ny'.
+    """
+    result = Cahn_Hilliard.add_fluctuation(Nx, Ny, c0, dc)
+    assert result.shape == (Ny, Nx)
  
 @given(Nx=st.integers(1,Nx), Ny=st.integers(1,Ny), 
        c0=st.floats(0, c0), dc=st.floats(0, dc))
@@ -62,12 +91,12 @@ def test_add_fluctuation_boundaries(Nx,Ny,c0,dc):
     - Asserts that all concentration values are >= 'c0 - dc * 0.5'.
     - Asserts that all concentration values are <= 'c0 + dc * 0.5'.
     """
-    c = Cahn_Hilliard.add_fluctuation(Nx, Ny, c0, dc)
+    result = Cahn_Hilliard.add_fluctuation(Nx, Ny, c0, dc)
     lower_bound = c0 - dc*(0.5)
     upper_bound = c0 + dc*(0.5)
     
-    assert np.all(c >= lower_bound)
-    assert np.all(c <= upper_bound)
+    assert np.all(result >= lower_bound)
+    assert np.all(result <= upper_bound)
 
 @given(c=st.floats(0, 1))
 def test_chemical_potential_boundaries(c):
@@ -118,7 +147,7 @@ def test_chemical_potential_shape(Nx, Ny):
       matches the shape of the input concentration matrix 'c'.
     """
     np.random.seed(24)
-    c = np.random.rand(Nx, Ny)
+    c = np.random.rand(Ny, Nx)
     A = 1
     result = Cahn_Hilliard.chemical_potential(c, A)
     
@@ -151,7 +180,7 @@ def test_my_laplacian_shape(Nx, Ny, dx, dy):
       matches the shape of the input concentration matrix 'c'.
     """
     np.random.seed(24)
-    c = np.random.rand(Nx, Ny)
+    c = np.random.rand(Ny, Nx)
     result = Cahn_Hilliard.my_laplacian(c, dx, dy)
     
     assert result.shape == c.shape    
