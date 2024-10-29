@@ -6,10 +6,9 @@ Created on Wed Oct  16 16:45:43 2024
 @author: decrinoa
 
 """
+import Cahn_Hilliard
 import configparser
-import pandas as pd
 import matplotlib.pyplot as plt
-import numpy as np
 import os
 
 config = configparser.ConfigParser()
@@ -24,24 +23,6 @@ Nx = int(Nx)
 Ny = int(Ny)
 
 nsave = int(nsave)
-
-
-def load_results_from_csv(filename='simulation_results.csv'):
-    # Load data from CSV file
-    df = pd.read_csv(filename)
-    
-    # Reconstruct results into a list of tuples
-    results = []
-    for index, row in df.iterrows():
-        time = row['Time']
-        c = np.fromstring(row['Concentration'].strip('[]'),
-                          sep=',', dtype=float).reshape((Ny, Nx))
-        mu_c = np.fromstring(row['Chemical Potential'].strip('[]'),
-                             sep=',', dtype=float).reshape((Ny, Nx))
-        
-        results.append((time, c, mu_c))
-    
-    return results
 
 def plot_results(results, nsave, folder='images'):
     
@@ -71,4 +52,4 @@ def plot_results(results, nsave, folder='images'):
     plt.show()
     
 
-plot_results(load_results_from_csv(filename='simulation_results.csv'), nsave)
+plot_results(Cahn_Hilliard.load_results_from_csv(Nx, Ny, filename='simulation_results.csv'), nsave)

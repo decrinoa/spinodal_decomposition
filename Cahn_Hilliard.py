@@ -139,3 +139,42 @@ def save_results_csv(results, filename='simulation_results.csv'):
     
     df = pd.DataFrame(data)
     df.to_csv(filename, index=False)
+
+def load_results_from_csv(Nx, Ny, filename='simulation_results.csv'):
+    """
+    This function reads a CSV file containing simulation results and reconstructs
+    the data into a list of tuples. Each tuple contains the time, concentration,
+    and chemical potential data.
+
+    Parameters:
+    ----------
+    Nx : The number of spatial points in the x-direction for reshaping 
+         the concentration and chemical potential arrays.
+
+    Ny : The number of spatial points in the y-direction for reshaping 
+         the concentration and chemical potential arrays.
+
+    filename : The name of the input CSV file (default is 'simulation_results.csv').
+
+    Returns:
+    -------
+    results : A list where each tuple contains:
+        - time (float): The time point of the simulation.
+        - c (numpy.ndarray): A 2D array of shape (Ny, Nx) 
+          representing the concentration at the given time.
+        - mu_c (numpy.ndarray): A 2D array of shape (Ny, Nx) 
+          representing the chemical potential at the given time.
+    """
+    df = pd.read_csv(filename)
+    
+    results = []
+    for index, row in df.iterrows():
+        time = row['Time']
+        c = np.fromstring(row['Concentration'].strip('[]'),
+                          sep=',', dtype=float).reshape((Ny, Nx))
+        mu_c = np.fromstring(row['Chemical Potential'].strip('[]'),
+                             sep=',', dtype=float).reshape((Ny, Nx))
+        
+        results.append((time, c, mu_c))
+    
+    return results
