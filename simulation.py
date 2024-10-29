@@ -11,6 +11,27 @@ import configparser
 import numpy as np
 
 def run_simulation():
+    """
+    Run the Cahn-Hilliard simulation based on parameters defined in a configuration file.
+
+    This function initializes the simulation environment by loading parameters from 
+    a configuration file (`configuration.ini`). It sets up the necessary simulation 
+    parameters, initializes the concentration field, and evolves the simulation using 
+    the Cahn-Hilliard equation. The results are then saved to a CSV file.
+
+    Steps performed in this function:
+    1. Load simulation parameters from the configuration file.
+    2. Initialize the random seed for reproducibility.
+    3. Create the initial concentration field with fluctuations.
+    4. Evolve the simulation over a defined number of time steps.
+    5. Save the simulation results to a CSV file.
+
+    Returns:
+    -------
+    None
+        The function does not return any value. It produces side effects by 
+        saving the simulation results to a file.
+    """
     # Load data from configuration file
     config = configparser.ConfigParser()
     config.read('configuration.ini')
