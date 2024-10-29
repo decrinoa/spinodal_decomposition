@@ -25,7 +25,31 @@ Ny = int(Ny)
 nsave = int(nsave)
 
 def plot_results(results, nsave, folder='images'):
-    
+    """
+    This function visualizes the concentration and chemical potential data from the 
+    simulation results. For each time step, it creates subplots displaying the concentration 
+    and chemical potential, and saves the plots as PNG files in the specified folder 
+    at defined intervals.
+
+    Parameters:
+    ----------
+    results : A list where each tuple contains:
+        - time (float): The time point of the simulation.
+        - c (numpy.ndarray): A 2D array representing the concentration at the given time.
+        - mu_c (numpy.ndarray): A 2D array representing the chemical potential at the given time.
+
+    nsave : The interval at which to save the plots (in terms of time steps). 
+            Only plots for times that are multiples of this value will be saved.
+
+    folder : The directory where the plots will be saved (default is 'images'). 
+             The directory will be created if it does not exist.
+
+    Returns:
+    -------
+    None
+        The function does not return any value. It produces plots and saves them to disk.
+
+    """
     os.makedirs(folder, exist_ok=True)
     
     plt.figure(figsize=(12, 6))
