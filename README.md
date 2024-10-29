@@ -16,16 +16,12 @@ these steps are referred to linux or WSL users.
 ```
 git clone https://github.com/decrinoa/spinodal_decomposition.git
 ```
-2- Make sure that you have all the needed packages in python3: 
+2- Make sure you have all the needed packages for Python 3. 
+   You can install them using the `requirements.txt` file: 
 ```
-pip install numpy 
-pip install matplotlib
-pip install pandas
-pip install configparser
-pip install os
-pip install hypothesis
+pip install -r requirements.txt
 ```
-The version of numpy must be lower than 2.x.x because it is incompatible with the used matplotlib methods. 
+Note: The version of numpy must be lower than 2.x.x because it is incompatible with the used matplotlib methods. 
 The version recommended is numpy 1.26.4.
 
 3- Navigate into the project directory
