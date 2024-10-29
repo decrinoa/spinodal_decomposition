@@ -57,31 +57,13 @@ def run_simulation():
     # Initialization of the random seed
     np.random.seed(seed)
     
-    # Creation of the empty 2Darrays
+    # Creation of the empty 2Darray
     c = np.zeros((Ny, Nx))
-    mu_c = np.zeros((Ny, Nx))
-    lap_c = np.zeros((Ny, Nx))
 
     # Initial configuration with fluctuation
     c = Cahn_Hilliard.add_fluctuation(Nx, Ny, c0, dc)
 
-    #evolve
-    results = []
-    for istep in range(1, nstep + 1):
-        # Laplacian of concentration
-        lap_c = Cahn_Hilliard.my_laplacian(c, dx, dy)  
-        # Chemical potential
-        mu_c = Cahn_Hilliard.chemical_potential(c, A)
-        # Generalized diffusion potential
-        dF_dc = mu_c - 2*grad_coef*lap_c  
-        # Laplacian of dF/dc, main term of the Cahn Hilliard equation
-        lap_dF_dc = Cahn_Hilliard.my_laplacian(dF_dc, dx, dy)  
-
-        # Time evolution
-        c += dtime * mobility * lap_dF_dc
-        
-        if istep % nprint == 0:
-            results.append((istep * dtime, np.copy(c), np.copy(mu_c)))
+    results = Cahn_Hilliard.evolve_simulation(c, nstep, nprint, dtime, mobility, grad_coef, A, dx, dy)
             
     Cahn_Hilliard.save_results_csv(results, filename='simulation_results.csv')
 

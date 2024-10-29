@@ -105,6 +105,57 @@ def my_laplacian(c, dx, dy):
     d2c_dy2 = (c_lef+c_rig-2*c) / (dy*dy)
     return d2c_dx2 + d2c_dy2
 
+def evolve_simulation(c, nstep, nprint, dtime, mobility, grad_coef, A, dx, dy):
+    """
+    Evolve the simulation for a given number of steps.
+
+    Parameters:
+    ----------
+    c : Initial concentration array.
+    
+    nstep : Number of time steps to evolve.
+    
+    nprint : Interval for printing results.
+    
+    dtime : Time increment for each step.
+    
+    mobility : Mobility parameter for the simulation.
+    
+    grad_coef : Gradient coefficient for the simulation.
+    
+    A : Material parameter for chemical potential calculation.
+    
+    dx : Spatial step size in x-direction.
+    
+    dy : Spatial step size in y-direction.
+
+    Returns:
+    -------
+    results : A list where each tuple contains:
+        - time (float): The current time of the simulation.
+        - c (numpy.ndarray): The concentration array at this time.
+        - mu_c (numpy.ndarray): The chemical potential array at this time.
+    """
+    results = []
+    
+    for istep in range(1, nstep + 1):
+        # Laplacian of concentration
+        lap_c = my_laplacian(c, dx, dy)  
+        # Chemical potential
+        mu_c = chemical_potential(c, A)
+        # Generalized diffusion potential
+        dF_dc = mu_c - 2 * grad_coef * lap_c  
+        # Laplacian of dF/dc, main term of the Cahn Hilliard equation
+        lap_dF_dc = my_laplacian(dF_dc, dx, dy)  
+
+        # Time evolution
+        c += dtime * mobility * lap_dF_dc
+        
+        if istep % nprint == 0:
+            results.append((istep * dtime, np.copy(c), np.copy(mu_c)))
+
+    return results
+
 def save_results_csv(results, filename='simulation_results.csv'):
     """
     This function takes simulation results, which include time, concentration,
