@@ -8,6 +8,8 @@ Created on Wed Oct  16 16:45:43 2024
 """
 import Cahn_Hilliard
 import configparser
+import sys
+from sys import argv
 import numpy as np
 
 def run_simulation():
@@ -34,7 +36,7 @@ def run_simulation():
     """
     # Load data from configuration file
     config = configparser.ConfigParser()
-    config.read('configuration.ini')
+    config.read(sys.argv[1])
 
 
     # Define the simulation cell parameters

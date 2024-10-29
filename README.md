@@ -30,8 +30,10 @@ cd spinodal_decomposition
 ```
 4- Start the simulation
 ```
-python3 simulation.py
+python3 simulation.py name_of_configuration_file
 ```
+Note: The configuration file provided in this repository is called 'configuration.ini'
+
 5- Plot the results
 ```
 python3 plotting.py
