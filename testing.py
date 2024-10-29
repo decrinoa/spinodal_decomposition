@@ -15,7 +15,7 @@ from hypothesis import given
 
 
 config = configparser.ConfigParser()
-config.read('configuration.ini')
+config.read('config_test.ini')
 
 Nx = config['settings']['Nx']
 Ny = config['settings']['Ny']
