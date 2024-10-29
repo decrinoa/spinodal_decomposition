@@ -107,35 +107,39 @@ def my_laplacian(c, dx, dy):
 
 def evolve_simulation(c, nstep, nprint, dtime, mobility, grad_coef, A, dx, dy):
     """
-    Evolve the simulation for a given number of steps.
+    This function computes the evolution of the concentration based on the Cahn-Hilliard 
+    equation. It calculates the laplacian, chemical potential, and updates the concentration 
+    at each time step, storing results at specified intervals.
 
     Parameters:
     ----------
-    c : Initial concentration array.
+    c : Initial concentration array of shape (Ny, Nx).
     
-    nstep : Number of time steps to evolve.
+    nstep : Total number of time steps for the simulation.
     
-    nprint : Interval for printing results.
+    nprint : Frequency of results printing (in terms of time steps).
     
-    dtime : Time increment for each step.
+    dtime : Time increment for each simulation step.
     
-    mobility : Mobility parameter for the simulation.
+    mobility : Mobility parameter that influences the rate of change in concentration.
     
-    grad_coef : Gradient coefficient for the simulation.
+    grad_coef : Coefficient for the gradient term in the Cahn-Hilliard equation.
+   
+    A : Material parameter used in the calculation of the chemical potential.
     
-    A : Material parameter for chemical potential calculation.
+    dx : Spatial step size in the x-direction.
     
-    dx : Spatial step size in x-direction.
-    
-    dy : Spatial step size in y-direction.
+    dy : Spatial step size in the y-direction.
 
     Returns:
     -------
-    results : A list where each tuple contains:
-        - time (float): The current time of the simulation.
-        - c (numpy.ndarray): The concentration array at this time.
-        - mu_c (numpy.ndarray): The chemical potential array at this time.
+    results : A list containing the simulation results, where each tuple includes:
+        - time (float): The current simulation time.
+        - c (numpy.ndarray): The concentration array at the current time.
+        - mu_c (numpy.ndarray): The chemical potential array at the current time.
+
     """
+    # Creation of the results list
     results = []
     
     for istep in range(1, nstep + 1):
