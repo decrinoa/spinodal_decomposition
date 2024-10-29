@@ -40,7 +40,6 @@ def add_fluctuation(Nx, Ny, c0, dc):
     """
     if Nx < 1 or Ny < 1:
         raise ValueError('Both dimensions of the matrix must be > 1, but are {} and {}'.format(Nx,Ny))
-    np.random.seed(24)
     return c0 + dc*(0.5-np.random.rand(Ny,Nx))
 
 def chemical_potential(c, A):

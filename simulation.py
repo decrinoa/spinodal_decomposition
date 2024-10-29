@@ -27,6 +27,9 @@ def run_simulation():
     nprint = config['settings']['nprint']
     dtime = config['settings']['dtime']
 
+    # Random Seed
+    seed = config['settings']['seed']
+
     # Material specific parameters
     c0 = config['material1']['c0']
     dc = config['material1']['dc']
@@ -42,12 +45,17 @@ def run_simulation():
     nstep = int(nstep)
     nprint = int(nprint)
     dtime = float(dtime)
+    
+    seed = int(seed)
 
     c0 = float(c0)
     dc = float(dc)
     mobility = float(mobility)
     grad_coef = float(grad_coef)
     A = float(A)
+    
+    # Initialization of the random seed
+    np.random.seed(seed)
     
     # Creation of the empty 2Darrays
     c = np.zeros((Ny, Nx))
