@@ -120,8 +120,10 @@ def test_add_fluctuation_boundaries(Nx,Ny,c0,dc):
 
     Assertions:
     -----------
-    - Asserts that all concentration values are >= 'c0 - dc * 0.5'.
-    - Asserts that all concentration values are <= 'c0 + dc * 0.5'.
+    - Asserts that all concentration values are greater than or equal to 
+      the minimum value obtained from the expression of 'add_fluctuation'.
+    - Asserts that all concentration values are are lower than or equal to 
+      the maximum value obtained from the expression of 'add_fluctuation'.
     """
     result = Cahn_Hilliard.add_fluctuation(Nx, Ny, c0, dc)
     lower_bound = c0 - dc*(0.5)
@@ -145,8 +147,10 @@ def test_chemical_potential_boundaries(c):
        
     Assertions:
     -----------
-    - Asserts that all chemical potential values are >= 'chemical_potential(c_min, A)'.
-    - Asserts that all chemical potential values are <= 'chemical_potential(c_max, A)'.
+    - Asserts that all chemical potential values are are greater than or equal to 
+      the minimum value obtained from the expression of 'chemical_potential'.
+    - Asserts that all chemical potential values are are lower than or equal to 
+      the maximum value obtained from the expression of 'chemical_potential'.
     """
     c_max = 0.5 - 1/(2*np.sqrt(3))
     c_min = 0.5 + 1/(2*np.sqrt(3))
