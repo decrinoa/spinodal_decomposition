@@ -8,6 +8,7 @@ Created on Thu Oct  10 13:08:11 2024
 """
 
 import numpy as np
+import pandas as pd
 
 def add_fluctuation(Nx, Ny, c0, dc):
     """
@@ -104,3 +105,37 @@ def my_laplacian(c, dx, dy):
     # Finite second derivative for the y direction
     d2c_dy2 = (c_lef+c_rig-2*c) / (dy*dy)
     return d2c_dx2 + d2c_dy2
+
+def save_results_csv(results, filename='simulation_results.csv'):
+    """
+    This function takes simulation results, which include time, concentration,
+    and chemical potential data, and saves them in a CSV format. 
+    Each entry in the CSV will have three columns: 
+    'Time', 'Concentration', and 'Chemical Potential'.
+
+    Parameters:
+    ----------
+    results : A list where each tuple contains the following elements:
+        - time (float): The time point of the simulation.
+        - c (numpy.ndarray): 
+            A 2D array representing the concentration at the given time.
+        - mu_c (numpy.ndarray): 
+            A 2D array representing the chemical potential at the given time.
+
+    filename : The name of the output CSV file (default is 'simulation_results.csv').
+
+    Returns:
+    -------
+    None
+        The function writes the data to a CSV file and does not return any value.
+    """
+    data = []
+    for time, c, mu_c in results:
+        data.append({
+            'Time': time,
+            'Concentration': c.flatten().tolist(),
+            'Chemical Potential': mu_c.flatten().tolist()
+        })
+    
+    df = pd.DataFrame(data)
+    df.to_csv(filename, index=False)

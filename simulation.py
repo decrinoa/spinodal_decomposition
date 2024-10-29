@@ -8,7 +8,6 @@ Created on Wed Oct  16 16:45:43 2024
 """
 import Cahn_Hilliard
 import configparser
-import pandas as pd
 import numpy as np
 
 def run_simulation():
@@ -76,19 +75,7 @@ def run_simulation():
         if istep % nprint == 0:
             results.append((istep * dtime, np.copy(c), np.copy(mu_c)))
             
-    save_results_csv(results, filename='simulation_results.csv')
-
-def save_results_csv(results, filename='simulation_results.csv'):
-    data = []
-    for time, c, mu_c in results:
-        data.append({
-            'Time': time,
-            'Concentration': c.flatten().tolist(),
-            'Chemical Potential': mu_c.flatten().tolist()
-        })
-    
-    df = pd.DataFrame(data)
-    df.to_csv(filename, index=False)
+    Cahn_Hilliard.save_results_csv(results, filename='simulation_results.csv')
 
 run_simulation()
 print("Simulation done! Data saved in simulation_results.csv")    
