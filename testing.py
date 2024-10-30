@@ -21,21 +21,36 @@ Ny = config['settings']['Ny']
 dx = config['settings']['dx']
 dy = config['settings']['dy']
 
+nstep = config['settings']['nstep']
+nprint = config['settings']['nprint']
+dtime = config['settings']['dtime']
+
+# Random Seed
 seed = config['settings']['seed']
 
+# Material specific parameters
 c0 = config['material']['c0']
 dc = config['material']['dc']
+mobility = config['material']['mobility']
+grad_coef = config['material']['grad_coef']
+A = config['material']['A'] 
 
 Nx = int(Nx)
 Ny = int(Ny)
 dx = float(dx)
 dy = float(dy)
 
+nstep = int(nstep)
+nprint = int(nprint)
+dtime = float(dtime)
+    
 seed = int(seed)
 
 c0 = float(c0)
 dc = float(dc)
-
+mobility = float(mobility)
+grad_coef = float(grad_coef)
+A = float(A)
 
 ################################add_fluctuation################################
  
@@ -57,8 +72,6 @@ def test_add_fluctuation_zero_amplitude():
     - Asserts that the output from add_fluctuation is a 2D array 
       of shape (Ny, Nx) where all elements are equal to c0.
     """
-    Nx = 5
-    Ny = 5
     c0 = 0.5
     dc = 0.0
     result = Cahn_Hilliard.add_fluctuation(Nx, Ny, c0, dc)
@@ -161,7 +174,6 @@ def test_chemical_potential_zero_concentration():
       the chemical potential value is also zero
     """
     c = 0.0
-    A = 1.0
     expected = 0.0
     
     assert np.isclose(Cahn_Hilliard.chemical_potential(c, A), expected)
@@ -182,7 +194,6 @@ def test_chemical_potential_full_concentration():
       the chemical potential value is zero
     """
     c = 1.0
-    A = 1.0
     expected = 0.0
     
     assert np.isclose(Cahn_Hilliard.chemical_potential(c, A), expected)
@@ -203,7 +214,6 @@ def test_chemical_potential_half_concentration():
       the chemical potential value is zero
     """
     c = 0.5
-    A = 1.0
     expected = 0.0
     
     assert np.isclose(Cahn_Hilliard.chemical_potential(c, A), expected)
@@ -224,7 +234,6 @@ def test_chemical_potential_positive():
       the chemical potential value is 0.1875, near the local maximum.
     """
     c = 0.25
-    A = 1.0
     expected = 0.1875
     
     assert np.isclose(Cahn_Hilliard.chemical_potential(c, A), expected)
@@ -245,7 +254,6 @@ def test_chemical_potential_negative():
       the chemical potential value is -0.1875, near the local minimum.
     """
     c = 0.75
-    A = 1.0
     expected = -0.1875
     
     assert np.isclose(Cahn_Hilliard.chemical_potential(c, A), expected)
@@ -293,7 +301,6 @@ def test_chemical_potential_boundaries(c):
     """
     c_max = 0.5 - 1/(2*np.sqrt(3))
     c_min = 0.5 + 1/(2*np.sqrt(3))
-    A = 1.0
     lower_bound = Cahn_Hilliard.chemical_potential(c_min, A)
     upper_bound = Cahn_Hilliard.chemical_potential(c_max, A)
     result = Cahn_Hilliard.chemical_potential(c, A)
@@ -321,9 +328,7 @@ def test_chemical_potential_shape(Nx, Ny):
     - Asserts that the shape of the output from 'chemical_potential' 
       matches the shape of the input concentration matrix 'c'.
     """
-    np.random.seed(24)
     c = np.random.rand(Ny, Nx)
-    A = 1.0
     result = Cahn_Hilliard.chemical_potential(c, A)
     
     assert result.shape == c.shape
@@ -337,8 +342,7 @@ def test_my_laplacian_value():
     c = [[1, 2, 1],
          [2, 3, 2],
          [1, 2, 1]]
-    with uniform spacing (dx, dy) set to 1.0. The expected output 
-    after applying the Laplacian is:
+    The expected output after applying the Laplacian is:
     expected = [[2, -1, 2],
                 [-1, -4, -1],
                 [2, -1, 2]]
@@ -354,7 +358,6 @@ def test_my_laplacian_value():
     c = np.array([[1, 2, 1],
                   [2, 3, 2],
                   [1, 2, 1]])
-    dx, dy = 1.0, 1.0
     expected = np.array([[2, -1, 2],
                          [-1, -4, -1],
                          [2, -1, 2]])
@@ -369,8 +372,7 @@ def test_my_laplacian_uniform():
     c = [[1, 1, 1],
          [1, 1, 1],
          [1, 1, 1]]
-    with uniform spacing (dx, dy) set to 1.0. The expected output 
-    after applying the Laplacian is a zero matrix:
+    The expected output after applying the Laplacian is a zero matrix:
     expected = [[0, 0, 0],
                 [0, 0, 0],
                 [0, 0, 0]]
@@ -386,7 +388,6 @@ def test_my_laplacian_uniform():
     c = np.array([[1, 1, 1],
                   [1, 1, 1],
                   [1, 1, 1]])
-    dx, dy = 1.0, 1.0
     expected = np.array([[0, 0, 0],
                          [0, 0, 0],
                          [0, 0, 0]])
@@ -402,8 +403,7 @@ def test_my_laplacian_linear_gradient():
     c = [[1, 2, 3],
          [1, 2, 3],
          [1, 2, 3]]
-    with uniform spacing (dx, dy) set to 1.0. The expected output 
-    after applying the Laplacian is:
+    The expected output after applying the Laplacian is:
     expected = [[3, 0, -3],
                 [3, 0, -3],
                 [3, 0, -3]]
@@ -419,7 +419,6 @@ def test_my_laplacian_linear_gradient():
     c = np.array([[1, 2, 3],
                   [1, 2, 3],
                   [1, 2, 3]])
-    dx, dy = 1.0, 1.0
     expected = np.array([[3, 0, -3],
                          [3, 0, -3],
                          [3, 0, -3]])
@@ -453,8 +452,91 @@ def test_my_laplacian_shape(Nx, Ny, dx, dy):
     - Asserts that the shape of the output from 'my_laplacian' 
       matches the shape of the input concentration matrix 'c'.
     """
-    np.random.seed(24)
     c = np.random.rand(Ny, Nx)
     result = Cahn_Hilliard.my_laplacian(c, dx, dy)
     
     assert result.shape == c.shape    
+
+###############################evolve_simulation###############################    
+    
+def test_evolve_simulation_basic_function():
+    """
+    This test verifies that the `evolve_simulation` function runs correctly for a
+    specified number of time steps and prints results at the correct intervals.
+    
+    Parameters:
+    ----------
+    None
+    
+    Assertions:
+    -----------
+    - Asserts that the length of the results matches the expected number of printed steps.
+    - Asserts that the shape of the returned concentration and 
+      chemical potential arrays match the shape of the initial concentration array.
+    """
+    c_initial = Cahn_Hilliard.add_fluctuation(Nx, Ny, c0, dc)
+    nstep = 10
+    nprint = 5
+    dtime = 0.1
+
+    results = Cahn_Hilliard.evolve_simulation(c_initial, nstep, nprint, dtime, mobility, grad_coef, A, dx, dy)
+    
+    # Check that results have the expected length
+    assert len(results) == nstep // nprint
+    
+    # Check the shape of the returned concentration arrays
+    for time, c, mu_c in results:
+        assert c.shape == c_initial.shape 
+        assert mu_c.shape == c_initial.shape
+
+
+def test_evolve_simulation_concentration():
+    """
+    This test ensures that the concentration changes after a simulation run. 
+    It compares the initial concentration with the final concentration
+    to verify that they are not the same, indicating that the simulation 
+    has produced some evolution.
+
+    Parameters:
+    ----------
+    None
+    
+    Assertions:
+    -----------
+    - Asserts that the initial and final concentration arrays are not similar.
+    """
+    c_initial = Cahn_Hilliard.add_fluctuation(Nx, Ny, c0, dc)
+    initial_concentration = np.copy(c_initial)
+    
+    nstep = 10
+    nprint = 5
+    dtime = 0.1
+
+    results = Cahn_Hilliard.evolve_simulation(c_initial, nstep, nprint, dtime, mobility, grad_coef, A, dx, dy)
+    final_concentration = results[-1][1]
+    
+    assert not np.allclose(initial_concentration, final_concentration)
+
+def test_evolve_simulation_zero_mobility():
+    """
+    This test verifies that when the mobility parameter is zero, 
+    the concentration remains unchanged throughout the simulation. 
+    It checks that the concentration arrays returned in the results
+    are all equal to the initial concentration.
+
+    Parameters:
+    ----------
+    None
+    
+    Assertions:
+    -----------
+    - Asserts that any concentration array in the results is similar to the initial concentration.
+    """
+    c_initial = Cahn_Hilliard.add_fluctuation(Nx, Ny, c0, dc)
+    initial_concentration = np.copy(c_initial)
+    results_zero_mobility = Cahn_Hilliard.evolve_simulation(c_initial, nstep, nprint, dtime, 0.0, grad_coef, A, dx, dy)
+
+    # Check that concentration remains the same due to zero mobility
+    for time, c, mu_c in results_zero_mobility:
+        assert np.allclose(c, initial_concentration)
+    
