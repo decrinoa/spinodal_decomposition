@@ -470,16 +470,18 @@ def test_evolve_simulation_basic_function():
     
     Assertions:
     -----------
-    - Asserts that the length of the results matches the expected number of printed steps.
+    - Asserts that the length of the results matches the expected number 
+      of printed steps.
     - Asserts that the shape of the returned concentration and 
       chemical potential arrays match the shape of the initial concentration array.
     """
     c_initial = Cahn_Hilliard.add_fluctuation(Nx, Ny, c0, dc)
-    nstep = 10
-    nprint = 5
-    dtime = 0.1
+    nstep = 100
+    nprint = 50
+    dtime = 0.01
 
-    results = Cahn_Hilliard.evolve_simulation(c_initial, nstep, nprint, dtime, mobility, grad_coef, A, dx, dy)
+    results = Cahn_Hilliard.evolve_simulation(c_initial, nstep, nprint, dtime, 
+                                              mobility, grad_coef, A, dx, dy)
     
     # Check that results have the expected length
     assert len(results) == nstep // nprint
@@ -508,14 +510,40 @@ def test_evolve_simulation_concentration():
     c_initial = Cahn_Hilliard.add_fluctuation(Nx, Ny, c0, dc)
     initial_concentration = np.copy(c_initial)
     
-    nstep = 10
-    nprint = 5
-    dtime = 0.1
+    nstep = 100
+    nprint = 50
+    dtime = 0.01
 
-    results = Cahn_Hilliard.evolve_simulation(c_initial, nstep, nprint, dtime, mobility, grad_coef, A, dx, dy)
+    results = Cahn_Hilliard.evolve_simulation(c_initial, nstep, nprint, dtime, 
+                                              mobility, grad_coef, A, dx, dy)
     final_concentration = results[-1][1]
     
     assert not np.allclose(initial_concentration, final_concentration)
+    
+def test_evolve_simulation_chemical_potential():
+    """
+    This test ensures that the chemical potential changes after a simulation run. 
+    It compares the initial chemical potential array with the final 
+    chemical potential array to verify that they are not the same, 
+    indicating that the simulation has produced some evolution.
+
+    Parameters:
+    ----------
+    None
+    
+    Assertions:
+    -----------
+    - Asserts that the initial and final chemical potential arrays are not similar.
+    """
+    c_initial = Cahn_Hilliard.add_fluctuation(Nx, Ny, c0, dc)
+
+    results = Cahn_Hilliard.evolve_simulation(c_initial, nstep, nprint, dtime, 
+                                              mobility, grad_coef, A, dx, dy)
+    initial_chemical_potential = results[1][2]
+    final_chemical_potential = results[-1][2]
+    
+    assert not np.allclose(initial_chemical_potential, final_chemical_potential)
+    
 
 def test_evolve_simulation_zero_mobility():
     """
@@ -530,13 +558,16 @@ def test_evolve_simulation_zero_mobility():
     
     Assertions:
     -----------
-    - Asserts that any concentration array in the results is similar to the initial concentration.
+    - Asserts that any concentration array in the results is similar 
+      to the initial concentration.
     """
     c_initial = Cahn_Hilliard.add_fluctuation(Nx, Ny, c0, dc)
     initial_concentration = np.copy(c_initial)
-    results_zero_mobility = Cahn_Hilliard.evolve_simulation(c_initial, nstep, nprint, dtime, 0.0, grad_coef, A, dx, dy)
+    results_zero_mobility = Cahn_Hilliard.evolve_simulation(c_initial, 
+                                                            nstep, nprint, dtime, 
+                                                            0.0, grad_coef, A, 
+                                                            dx, dy)
 
     # Check that concentration remains the same due to zero mobility
     for time, c, mu_c in results_zero_mobility:
         assert np.allclose(c, initial_concentration)
-    
