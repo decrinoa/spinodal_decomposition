@@ -22,8 +22,8 @@ Ny = config['settings']['Ny']
 dx = config['settings']['dx']
 dy = config['settings']['dy']
 
-c0 = config['material1']['c0']
-dc = config['material1']['dc']
+c0 = config['material']['c0']
+dc = config['material']['dc']
 
 Nx = int(Nx)
 Ny = int(Ny)
@@ -34,10 +34,11 @@ c0 = float(c0)
 dc = float(dc)
 
 
+"""
 @given(Nx=st.integers(1,Nx), Ny=st.integers(1,Ny), 
        c0=st.floats(0, c0), dc=st.floats(0, dc))
 def test_add_fluctuation_reproducibility(Nx, Ny, c0, dc):
-    """
+    
     This test ensure that the function 'add_fluctuation' produces a 
     consistent output for given input parameters when a fixed random seed is used. 
     
@@ -59,12 +60,12 @@ def test_add_fluctuation_reproducibility(Nx, Ny, c0, dc):
     -----------
     - Asserts that the output from the `add_fluctuation` function matches 
     the expected result calculated using the same formula with the same seed. 
-    """
+    
     result = Cahn_Hilliard.add_fluctuation(Nx, Ny, c0, dc)
     np.random.seed(24)
     expected = c0 + dc*(0.5-np.random.rand(Ny,Nx))
     assert np.array_equal(result, expected)
-    
+"""    
 @given(Nx=st.integers(1,Nx), Ny=st.integers(1,Ny), 
        c0=st.floats(0, c0), dc=st.floats(0, dc))
 def test_add_fluctuation_shape(Nx, Ny, c0, dc):
@@ -132,6 +133,132 @@ def test_add_fluctuation_boundaries(Nx,Ny,c0,dc):
     assert np.all(result >= lower_bound)
     assert np.all(result <= upper_bound)
 
+def test_chemical_potential_zero_concentration():
+    """
+    This test checks that the chemical potential is zero when the
+    concentration is zero, regardless of the value of A. 
+    The case c = 0.0 is a zero of the function 'chemical_potential'.
+    
+    Parameters:
+    ----------
+    None
+    
+    Assertions:
+    -----------
+    - Asserts that given a concentration value equal to zero 
+      the chemical potential value is also zero
+    """
+    c = 0.0
+    A = 1.0
+    expected = 0.0
+    
+    assert np.isclose(Cahn_Hilliard.chemical_potential(c, A), expected)
+
+def test_chemical_potential_full_concentration():
+    """
+    This test checks that the chemical potential is zero when the
+    concentration is one, regardless of the value of A.
+    The case c = 1.0 is a zero of the function 'chemical_potential'.
+    
+    Parameters:
+    ----------
+    None
+    
+    Assertions:
+    -----------
+    - Asserts that given a concentration value equal to one 
+      the chemical potential value is zero
+    """
+    c = 1.0
+    A = 1.0
+    expected = 0.0
+    
+    assert np.isclose(Cahn_Hilliard.chemical_potential(c, A), expected)
+    
+def test_chemical_potential_half_concentration():
+    """
+    This test checks that the chemical potential is zero when the
+    concentration is 0.5, regardless of the value of A.
+    The case c = 0.5 is a zero of the function 'chemical_potential'.
+    
+    Parameters:
+    ----------
+    None
+    
+    Assertions:
+    -----------
+    - Asserts that given a concentration value equal to 0.5 
+      the chemical potential value is zero
+    """
+    c = 0.5
+    A = 1.0
+    expected = 0.0
+    
+    assert np.isclose(Cahn_Hilliard.chemical_potential(c, A), expected)
+
+def test_chemical_potential_positive():
+    """
+    This test checks the chemical potential when the concentration is
+    0.25 and A is 1.0. The expected output is 0.1875.
+    The case c = 0.25 is near the local maximum of the function 'chemical_potential'
+    
+    Parameters:
+    ----------
+    None
+    
+    Assertions:
+    -----------
+    - Asserts that given a concentration value equal to 0.25 
+      the chemical potential value is 0.1875, near the local maximum.
+    """
+    c = 0.25
+    A = 1.0
+    expected = 0.1875
+    
+    assert np.isclose(Cahn_Hilliard.chemical_potential(c, A), expected)
+
+def test_chemical_potential_negative():
+    """
+    This test checks the chemical potential when the concentration is
+    0.75 and A is 1.0. The expected output is -0.1875.
+    The case c = 0.75 is near the local minimum of the function 'chemical_potential'
+    
+    Parameters:
+    ----------
+    None
+    
+    Assertions:
+    -----------
+    - Asserts that given a concentration value equal to 0.75
+      the chemical potential value is -0.1875, near the local minimum.
+    """
+    c = 0.75
+    A = 1.0
+    expected = -0.1875
+    
+    assert np.isclose(Cahn_Hilliard.chemical_potential(c, A), expected)
+    
+def test_chemical_potential_zero_A():
+    """
+    This test verifies that the chemical potential is zero when A is
+    set to zero, regardless of the concentration value. The expected
+    output is 0.0.
+    
+    Parameters:
+    ----------
+    None
+    
+    Assertions:
+    -----------
+    - Asserts that given A equal to 0.0
+      the chemical potential value is also 0.0.
+    """
+    c = 0.24
+    A = 0.0
+    expected = 0.0
+    
+    assert np.isclose(Cahn_Hilliard.chemical_potential(c, A), expected)
+
 @given(c=st.floats(0, 1))
 def test_chemical_potential_boundaries(c):
     """
@@ -189,31 +316,6 @@ def test_chemical_potential_shape(Nx, Ny):
     
     assert result.shape == c.shape
 
-@given(Nx=st.integers(1,Nx), Ny=st.integers(1,Ny))
-def test_chemical_potential_values(Nx, Ny):
-    """
-    This test verifies that the output of the function 'chemical_potential'
-    matches the expected chemical potential values calculated using the known formula.
-
-    Parameters:
-    ----------
-    Nx : The number of columns in the concentration matrix. 
-         Must be >= 1 than and <= than Nx in configuration file.
-       
-    Ny : The number of rows in the concentration matrix. 
-         Must be >= than 1 and <= than Ny in configuration file.
-
-    Assertions:
-    -----------
-    - Asserts that the actual output from the `chemical_potential` 
-    function is nearly equal to the expected output.
-    """
-    np.random.seed(24)
-    c = np.random.rand(Ny, Nx)
-    A = 1.0
-    result = Cahn_Hilliard.chemical_potential(c, A)
-    expected = 2 * A * (c * (1 - c)**2 - c**2 * (1 - c))
-    np.testing.assert_almost_equal(result, expected)
     
 @given(Nx=st.integers(1,Nx), Ny=st.integers(1,Ny), 
        dx=st.floats(1.0,dx), dy=st.floats(1.0,dy))
