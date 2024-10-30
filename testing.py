@@ -330,6 +330,103 @@ def test_chemical_potential_shape(Nx, Ny):
 
 #################################my_laplacian#################################
 
+def test_my_laplacian_value():
+    """
+    This test verifies that the Laplacian operator is correctly applied 
+    to a given concentration matrix, which is defined as:
+    c = [[1, 2, 1],
+         [2, 3, 2],
+         [1, 2, 1]]
+    with uniform spacing (dx, dy) set to 1.0. The expected output 
+    after applying the Laplacian is:
+    expected = [[2, -1, 2],
+                [-1, -4, -1],
+                [2, -1, 2]]
+    
+    Parameters:
+    ----------
+    None
+    
+    Assertions:
+    -----------
+    - Asserts that the result of my_laplacian is close to the expected output.
+    """
+    c = np.array([[1, 2, 1],
+                  [2, 3, 2],
+                  [1, 2, 1]])
+    dx, dy = 1.0, 1.0
+    expected = np.array([[2, -1, 2],
+                         [-1, -4, -1],
+                         [2, -1, 2]])
+    result = Cahn_Hilliard.my_laplacian(c, dx, dy)
+    
+    assert np.allclose(result, expected)
+
+def test_my_laplacian_uniform():
+    """
+    This test verifies that the Laplacian operator is correctly applied 
+    to a uniform concentration matrix, which is defined as:
+    c = [[1, 1, 1],
+         [1, 1, 1],
+         [1, 1, 1]]
+    with uniform spacing (dx, dy) set to 1.0. The expected output 
+    after applying the Laplacian is a zero matrix:
+    expected = [[0, 0, 0],
+                [0, 0, 0],
+                [0, 0, 0]]
+    
+    Parameters:
+    ----------
+    None
+    
+    Assertions:
+    -----------
+    - Asserts that the result of my_laplacian matches the expected zero matrix.
+    """
+    c = np.array([[1, 1, 1],
+                  [1, 1, 1],
+                  [1, 1, 1]])
+    dx, dy = 1.0, 1.0
+    expected = np.array([[0, 0, 0],
+                         [0, 0, 0],
+                         [0, 0, 0]])
+    
+    result = Cahn_Hilliard.my_laplacian(c, dx, dy)
+    
+    assert np.allclose(result, expected)
+
+def test_my_laplacian_linear_gradient():
+    """
+    This test verifies that the Laplacian operator is correctly applied 
+    to a linear gradient concentration matrix, which is defined as:
+    c = [[1, 2, 3],
+         [1, 2, 3],
+         [1, 2, 3]]
+    with uniform spacing (dx, dy) set to 1.0. The expected output 
+    after applying the Laplacian is:
+    expected = [[3, 0, -3],
+                [3, 0, -3],
+                [3, 0, -3]]
+    
+    Parameters:
+    ----------
+    None
+    
+    Assertions:
+    -----------
+    - Asserts that the result of my_laplacian is close to the expected output.
+    """
+    c = np.array([[1, 2, 3],
+                  [1, 2, 3],
+                  [1, 2, 3]])
+    dx, dy = 1.0, 1.0
+    expected = np.array([[3, 0, -3],
+                         [3, 0, -3],
+                         [3, 0, -3]])
+    result = Cahn_Hilliard.my_laplacian(c, dx, dy)
+    
+    assert np.allclose(result, expected)    
+
 @given(Nx=st.integers(1,Nx), Ny=st.integers(1,Ny), 
        dx=st.floats(1.0,dx), dy=st.floats(1.0,dy))
 def test_my_laplacian_shape(Nx, Ny, dx, dy):
