@@ -9,7 +9,6 @@ Created on Wed Oct  16 16:45:43 2024
 import Cahn_Hilliard
 import configparser
 import sys
-from sys import argv
 import numpy as np
 
 def run_simulation():
@@ -54,11 +53,11 @@ def run_simulation():
     seed = config['settings']['seed']
 
     # Material specific parameters
-    c0 = config['material1']['c0']
-    dc = config['material1']['dc']
-    mobility = config['material1']['mobility']
-    grad_coef = config['material1']['grad_coef']
-    A = config['material1']['A'] 
+    c0 = config['material']['c0']
+    dc = config['material']['dc']
+    mobility = config['material']['mobility']
+    grad_coef = config['material']['grad_coef']
+    A = config['material']['A'] 
 
     Nx = int(Nx)
     Ny = int(Ny)

@@ -10,9 +10,10 @@ import Cahn_Hilliard
 import configparser
 import matplotlib.pyplot as plt
 import os
+import sys
 
 config = configparser.ConfigParser()
-config.read('configuration.ini')
+config.read(sys.argv[1])
 
 Nx = config['settings']['Nx']
 Ny = config['settings']['Ny']

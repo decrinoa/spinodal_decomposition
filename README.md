@@ -32,11 +32,11 @@ cd spinodal_decomposition
 ```
 python3 simulation.py name_of_configuration_file
 ```
-Note: The configuration file provided in this repository is called 'configuration.ini'
+Note: There are two configuration file provided in this repository, called 'config_material_1.ini' and 'config_material_2.ini'.
 
 5- Plot the results
 ```
-python3 plotting.py
+python3 plotting.py name_of_configuration_file
 ```
 
 # Structure of the project
@@ -61,19 +61,16 @@ The scope of the simulation is to show the evolution of the concentrations and t
 In the file plotting there is the function that plots the evolution of the concentration and chemical potential values by means of two color maps. 
 The data for the plotting are uploaded from the csv file and 10 significant frame of the simulation are saved in the newly created images folder.
 
-## Guide on the configuration modification
+## Guide on the configuration modification 
 
-The user can decide which of the two configuration to use.
+The user can decide which of the two configuration to use. 
  
-In order to switch from one to the other, is necessary to open and modify the simulation.py file.
+In order to switch from one to the other, is necessary to call the configuration file name when launching the simulation.
 
-At line 31 there is the section regarding the material's parameter, in the base version the material chosen is 'material1',
-in order to switch to 'material2' is necessary to substitute the keyword 'material1' with 'material2'. 
+If the user wants to add a new configuration, a new file can be created.
+This new configuration must be organized as the given example, therefore containing the sections [settings] and [material]. 
 
-If the user wants to add a new configuration, a new section in the configuration.ini file can be added.
-This new configuration must be preceded by the keyword [material3]. 
-
-It is suggested to leave the value of the initial concentration to 0.5, since in this way the starting point is and heterogeneous system. 
+It is suggested to leave the value of the initial concentration to 0.5, since in this way the starting point is and homogeneous system. 
 The value of the amplitude of the fluctuations should not be too big since it is a fluctuation. 
 A recommended maximum value is 0.1.  
 
@@ -135,10 +132,10 @@ In this way also the element at the border of the matrix are properly handled.
 
 ## Remarks on the configurations used and their main outcomes
  
-In the file configuration.ini two examples are reported: 
-- the 'material1' parameters corresponds to a system where the predominant term is the diffusive term, 
+In the repository two examples of configuration are reported: 
+- the 'config_material1' parameters corresponds to a system where the predominant term is the diffusive term, 
 therefore the fluctuations of the concentration will be amplified and the system will evolve faster in the two phase configuration;
-- the 'material2' parameters corresponds to a system where the predominant term is the gradient term, the fluctuations are therefore dumped and the system will evolve slowly. 
+- the 'config_material2' parameters corresponds to a system where the predominant term is the gradient term, the fluctuations are therefore dumped and the system will evolve slowly. 
 
 An illustration of the difference between the two materials can be seen in the following image. 
 The outcomes of the simulation at time 50s, 250s and 500s are presented for both the configuration given. 
