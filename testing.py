@@ -477,6 +477,7 @@ def test_evolve_simulation_basic_function():
     - Asserts that the shape of the returned concentration and 
       chemical potential arrays match the shape of the initial concentration array.
     """
+    Nx, Ny = 10, 10
     c_initial = Cahn_Hilliard.add_fluctuation(Nx, Ny, c0, dc)
     nstep = 100
     nprint = 50
@@ -511,6 +512,7 @@ def test_evolve_simulation_progress():
     - Asserts that the initial and final concentration arrays are not similar.
     - Asserts that the initial and final chemical potential arrays are not similar.
     """
+    Nx, Ny = 10, 10
     c_initial = Cahn_Hilliard.add_fluctuation(Nx, Ny, c0, dc)
     initial_concentration = np.copy(c_initial)
 
@@ -541,6 +543,7 @@ def test_evolve_simulation_zero_mobility():
     - Asserts that any concentration array in the results is similar 
       to the initial concentration.
     """
+    Nx, Ny = 10, 10
     c_initial = Cahn_Hilliard.add_fluctuation(Nx, Ny, c0, dc)
     initial_concentration = np.copy(c_initial)
     results_zero_mobility = Cahn_Hilliard.evolve_simulation(c_initial, 
@@ -551,6 +554,42 @@ def test_evolve_simulation_zero_mobility():
     # Check that concentration remains the same due to zero mobility
     for time, c, mu_c in results_zero_mobility:
         assert np.allclose(c, initial_concentration)
+
+def test_evolve_simulation_grad_coef():
+    """
+    This test runs the simulation with two different values of 
+    'grad_coef' and checks that the resulting concentration arrays 
+    differ, indicating that grad_coef has an effect on the simulation.
+    
+    Parameters:
+    ----------
+    None
+    
+    Assertions:
+    -----------
+    - Asserts that the initial and final concentration arrays are not similar.
+    """
+    Nx, Ny = 10, 10
+    # Initial concentration array
+    c_initial = Cahn_Hilliard.add_fluctuation(Nx, Ny, c0, dc)
+
+    # Run the simulation with a low grad_coef
+    grad_coef_low = 0.1
+    results_low = Cahn_Hilliard.evolve_simulation(c_initial.copy(), nstep, 
+                                                  nprint, dtime, mobility, 
+                                                  grad_coef_low, A, dx, dy)
+    final_concentration_low = results_low[-1][1]  # Get the final concentration
+
+    # Run the simulation with a high grad_coef
+    grad_coef_high = 1.0
+    results_high = Cahn_Hilliard.evolve_simulation(c_initial.copy(), nstep, 
+                                                   nprint, dtime, mobility, 
+                                                   grad_coef_high, A, dx, dy)
+    final_concentration_high = results_high[-1][1]  # Get the final concentration
+
+    # Check that the final concentrations are sufficiently different
+    assert not np.allclose(final_concentration_low, final_concentration_high)
+
         
 ###############################save_results_csv############################### 
 
