@@ -552,3 +552,102 @@ def test_evolve_simulation_zero_mobility():
     for time, c, mu_c in results_zero_mobility:
         assert np.allclose(c, initial_concentration)
         
+###############################save_results_csv############################### 
+
+def test_save_results_csv():
+    """
+    This function generates mock simulation results by evolving the 
+    Cahn-Hilliard model and saves the results to a CSV file. It then 
+    reads the data back from the CSV file to verify that the saved 
+    data matches the original simulation results. The test checks 
+    that the number of entries is correct and that the values for 
+    time, concentration, and chemical potential are consistent.
+    
+    Parameters:
+    -----------
+    None 
+    
+    Assertions:
+    -----------
+    - Asserts that the number of entries is the same between 
+      the original results and the loaded data.
+    - Asserts that the values of the entries are the same between 
+      the original results and the loaded data.
+    """
+    # Step 1: Create results
+    Nx, Ny = 10, 10
+    c = Cahn_Hilliard.add_fluctuation(Nx, Ny, c0, dc)
+    original_results = Cahn_Hilliard.evolve_simulation(c, nstep, nprint, dtime, 
+                                                       mobility, grad_coef, 
+                                                       A, dx, dy)
+    # Step 2: Save to CSV
+    filename = 'test_save_results.csv'
+    Cahn_Hilliard.save_results_csv(original_results, filename)
+
+    # Step 3: Load back the data to verify
+    loaded_df = pd.read_csv(filename)
+    
+    # Check the number of entries
+    assert len(original_results) == len(loaded_df)
+
+    # Check each entry
+    for index, (orig_time, orig_c, orig_mu_c) in enumerate(original_results):
+        loaded_row = loaded_df.iloc[index]
+        assert np.isclose(orig_time, loaded_row['Time'])
+        assert np.array_equal(orig_c.flatten(), 
+                              np.fromstring(loaded_row['Concentration'].strip('[]'), 
+                              sep=',', dtype=float))
+        assert np.array_equal(orig_mu_c.flatten(), 
+                              np.fromstring(loaded_row['Chemical Potential'].strip('[]'), 
+                              sep=',', dtype=float))
+    # Clean up
+    os.remove(filename)
+
+#############################load_results_from_csv############################# 
+
+def test_load_results_from_csv():
+    """
+    This function generates mock simulation results by evolving the 
+    Cahn-Hilliard model, saves the results to a CSV file, and then 
+    tests the loading functionality of the load_results_from_csv function. 
+    It verifies that the loaded data matches the original simulation results. 
+    The test checks that the number of entries is correct and that 
+    the values for time, concentration, and chemical potential 
+    
+    Parameters:
+    -----------
+    None 
+    
+    Assertions:
+    -----------
+    - Asserts that the number of entries is the same between 
+      the original results and the loaded data.
+    - Asserts that the values of the entries are the same between 
+      the original results and the loaded data.
+    """
+    # Step 1: Create results
+    Nx, Ny = 10, 10
+    c = Cahn_Hilliard.add_fluctuation(Nx, Ny, c0, dc)
+    original_results = Cahn_Hilliard.evolve_simulation(c, nstep, nprint, dtime, 
+                                              mobility, grad_coef, A, dx, dy)
+    # Step 2: Save to CSV
+    filename = 'test_load_results.csv'
+    Cahn_Hilliard.save_results_csv(original_results, filename)
+
+    # Step 3: Load from CSV
+    loaded_results = Cahn_Hilliard.load_results_from_csv(Nx, Ny, filename)
+
+    # Check the number of entries
+    assert len(original_results) == len(loaded_results)
+    
+    # Check each entry
+    for (orig_time, 
+         orig_c, orig_mu_c), (loaded_time, 
+                              loaded_c, loaded_mu_c) in zip(original_results, 
+                                                            loaded_results):
+        assert np.isclose(orig_time, loaded_time)
+        assert np.array_equal(orig_c, loaded_c)
+        assert np.array_equal(orig_mu_c, loaded_mu_c)
+
+    # Clean up
+    os.remove(filename)
